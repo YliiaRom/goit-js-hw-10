@@ -37,6 +37,11 @@
   
     color: #989898;
   background: #CFCFCF;
+  transition: background 0.3s;
+  }
+  .timer-input-btn:hover {
+    background: #4E75FF;
+    color: #fff;
   }
   
   
