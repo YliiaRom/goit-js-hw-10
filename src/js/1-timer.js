@@ -19,7 +19,7 @@ const fieldSecond = document.querySelector('[data-seconds]');
 let userSelectedDate = null;
 let timerCalc = null;
 //Кнопка «Start» повинна бути неактивною 
-btnTimerInput.disabled = false;
+btnTimerInput.disabled = true;
 
 
 flatpickr("#datetime-picker", {
@@ -41,15 +41,21 @@ flatpickr("#datetime-picker", {
     userSelectedDate = selectedDates[0];
     //вибрав дату в минулому
     //кнопку «Start» не активною.
-    if (userSelectedDate < Date.now()) {
-     
+    if (userSelectedDate <= new Date()){
+      btnTimerInput.disabled = true;
       iziToast.error({
-       
-        message: 'Please choose a date in the future'
-    });
+        title: 'Error',
+        message: 'Please choose a date in the future',
+      });
+    } else {
       btnTimerInput.disabled = false;
-     
+
+      iziToast.success({
+        title: 'Success',
+        message: 'Valid date selected!',
+      });
     }
+
     // дату в майбутньому, кнопка = активною.
     if (userSelectedDate > Date.now()) {
       btnTimerInput.disabled = false;
@@ -60,10 +66,13 @@ flatpickr("#datetime-picker", {
 // обчислювати раз на секунду, скільки часу залишилось до вказаної дати,
 btnTimerInput.addEventListener('click', () => {
   //кнопка Старт і інпут стають неактивним
-  btnTimerInput.disabled = false;
-  timerInput.disabled = false;
+  btnTimerInput.disabled = true;
+  timerInput.disabled = true;
+ 
 
 timerCalc = setInterval(() => {
+  btnTimerInput.disabled = true;
+  timerInput.disabled = true;
   const timeDiff = userSelectedDate - Date.now();
   
   //зупинятися, коли дійшов до кінцевої дати
@@ -71,7 +80,7 @@ timerCalc = setInterval(() => {
     clearInterval(timerCalc);
 
     //Після зупинки таймера інпут стає активним
-    btnTimerInput.disabled = true;
+    btnTimerInput.disabled = false;
     return;
   } 
 
@@ -112,6 +121,3 @@ function convertMs(ms) {
 function addLeadingZero(value) {
   return value.toString().padStart(2, '0'); 
 }
-
-
-
