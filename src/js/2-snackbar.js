@@ -15,7 +15,9 @@ setTimeout(() => {
     title: 'Hello',
     message: 'Welcome!',
 });
-}, 1000);
+}, 500);
+
+
 
 form.addEventListener('submit', (event) => {
 event.preventDefault();
@@ -26,35 +28,26 @@ const ms = Number(form.elements.delay.value);
 //значение радио кнопки- value
 const radioBtnVal = form.elements.state.value;
 
-if (radioBtnVal === '') {
-  iziToast.warning({
-    title: 'Caution',
-    message: 'You forgot important data',
-});
-}
-
-
+//созд промиса
 const promise = ms => {
   return new Promise((resolve, reject) => {
   
     if (radioBtnVal === 'fulfilled') {
-      setTimeout(() => {return resolve(
-        iziToast.success({
-          
-          message: `Fulfilled promise in ${ms}ms`,
-      })
-        //--resolv
-      )}, ms);
+      setTimeout(() => {return resolve()}, ms);
     }
     if(radioBtnVal === 'rejected') {
-      setTimeout(() => {return reject(
-  )}, ms)
+      setTimeout(() => {return reject()}, ms)
     }
   });
-
+//-promis
 }
+
+//вызов промиса
   promise(ms)
-  .then((value) => value)
+  .then((value) =>  iziToast.success({
+          
+    message: `Fulfilled promise in ${ms}ms`,
+}))
   .catch((err) => iziToast.error({
     
     message: `Rejected promise in ${ms}ms`,
@@ -62,3 +55,4 @@ const promise = ms => {
 
 //-/submit
 });
+

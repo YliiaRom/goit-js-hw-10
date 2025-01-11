@@ -71,12 +71,12 @@ btnTimerInput.addEventListener('click', () => {
  
 
 timerCalc = setInterval(() => {
-  btnTimerInput.disabled = true;
-  timerInput.disabled = true;
+  // btnTimerInput.disabled = true;
+  // timerInput.disabled = true;
   const timeDiff = userSelectedDate - Date.now();
   
   //зупинятися, коли дійшов до кінцевої дати
-  if(userSelectedDate <= new Date()) {
+  if(timeDiff <= 0) {
     clearInterval(timerCalc);
 
     //Після зупинки таймера інпут стає активним
