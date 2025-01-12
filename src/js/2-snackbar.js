@@ -4,19 +4,12 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 const form = document.querySelector('.form');
-const inputDelay = document.querySelector('.input-delay');
-const btnSubmit = document.querySelector('.btn-form');
-const radioBtnFul = document.querySelector('[value=fulfilled]');
-const radioBtnRej = document.querySelector('[value=rejected]');
-const radioButtons = document.querySelectorAll('input[name="state"]');
 
-setTimeout(() => {
+
   iziToast.info({
     title: 'Hello',
     message: 'Welcome!',
 });
-}, 500);
-
 
 
 form.addEventListener('submit', (event) => {
@@ -28,31 +21,39 @@ const ms = Number(form.elements.delay.value);
 //значение радио кнопки- value
 const radioBtnVal = form.elements.state.value;
 
-//созд промиса
-const promise = ms => {
-  return new Promise((resolve, reject) => {
+
+  // Проверка значений
+  if (ms <= 0 || isNaN(ms)) {
+    iziToast.error({
+      message: 'Delay must be a positive number!',
+    });
+    return;
+  }
+
+//вызов промиса
+promise(ms, radioBtnVal)
+.then((ms) =>  iziToast.success({
+        
+  message: `Fulfilled promise in ${ms}ms`,
+}))
+.catch((err) => iziToast.error({
   
-    if (radioBtnVal === 'fulfilled') {
-      setTimeout(() => {return resolve()}, ms);
-    }
-    if(radioBtnVal === 'rejected') {
-      setTimeout(() => {return reject()}, ms)
-    }
+  message: `Rejected promise in ${ms}ms`,
+}))
+;
+
+//-/submit
+form.reset();
+});
+
+//созд промиса
+function promise(ms, radioBtnVal) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      radioBtnVal === 'fulfilled' ? resolve(ms) : reject(ms);
+    }, ms);
+  
+    //-prom
   });
 //-promis
 }
-
-//вызов промиса
-  promise(ms)
-  .then((value) =>  iziToast.success({
-          
-    message: `Fulfilled promise in ${ms}ms`,
-}))
-  .catch((err) => iziToast.error({
-    
-    message: `Rejected promise in ${ms}ms`,
-}));
-
-//-/submit
-});
-
